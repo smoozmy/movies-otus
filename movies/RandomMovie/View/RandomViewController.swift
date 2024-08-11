@@ -1,4 +1,5 @@
 import UIKit
+import FirebaseCrashlytics
 
 final class RandomViewController: UIViewController {
     
@@ -46,6 +47,8 @@ final class RandomViewController: UIViewController {
         setView()
         setupConstraints()
         setupBindings()
+        
+        Crashlytics.crashlytics().log("Открыт экран для поиска рандомного фильма")
     }
     
     private func setView() {

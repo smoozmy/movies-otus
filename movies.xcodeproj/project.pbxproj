@@ -30,6 +30,7 @@
 		6F27074A2C5553EE006E5A63 /* RandomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2707492C5553EE006E5A63 /* RandomViewModel.swift */; };
 		6F4855EF2C68FA7F006C189C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6F4855EE2C68FA7F006C189C /* FirebaseAnalytics */; };
 		6F4855F12C68FA95006C189C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F4855F02C68FA95006C189C /* GoogleService-Info.plist */; };
+		6F4855F42C6918A3006C189C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6F4855F32C6918A3006C189C /* FirebaseCrashlytics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F4855EF2C68FA7F006C189C /* FirebaseAnalytics in Frameworks */,
+				6F4855F42C6918A3006C189C /* FirebaseCrashlytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +186,7 @@
 			name = movies;
 			packageProductDependencies = (
 				6F4855EE2C68FA7F006C189C /* FirebaseAnalytics */,
+				6F4855F32C6918A3006C189C /* FirebaseCrashlytics */,
 			);
 			productName = movies;
 			productReference = 6F27070B2C4C1C2E006E5A63 /* movies.app */;
@@ -526,6 +529,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6F4855ED2C68FA7F006C189C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
+		};
+		6F4855F32C6918A3006C189C /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6F4855ED2C68FA7F006C189C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
