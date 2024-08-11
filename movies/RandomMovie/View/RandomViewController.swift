@@ -14,7 +14,7 @@ final class RandomViewController: UIViewController {
     }()
     
     private lazy var randomButton: UIButton = {
-        let element = UIButton(type: .system)
+        let element = UIButton(type: .custom)
         element.setTitle("Выбрать фильм...", for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
         element.setTitleColor(.white, for: .normal)
@@ -22,6 +22,17 @@ final class RandomViewController: UIViewController {
         element.addTarget(self, action: #selector(didRandomButtonTapped), for: .touchUpInside)
         element.layer.cornerRadius = 25
         element.layer.masksToBounds = true
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }()
+    
+    private lazy var crashButton: UIButton = {
+        let element = UIButton(type: .system)
+        element.setTitle("crash", for: .normal)
+        element.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
+        element.tintColor = .systemRed
+        element.addTarget(self, action: #selector(didCrashButtonTapped), for: .touchUpInside)
+        
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -40,6 +51,7 @@ final class RandomViewController: UIViewController {
     private func setView() {
         view.addSubview(randomImages)
         view.addSubview(randomButton)
+        view.addSubview(crashButton)
     }
     
     private func setupBindings() {
@@ -53,6 +65,10 @@ final class RandomViewController: UIViewController {
     
     @objc private func didRandomButtonTapped() {
         viewModel.fetchRandomFilm()
+    }
+    
+    @objc private func didCrashButtonTapped() {
+        fatalError("Test crash")
     }
     
     private func showFilmDetails() {
@@ -83,6 +99,9 @@ extension RandomViewController {
             randomButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             randomButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             randomButton.heightAnchor.constraint(equalToConstant: 60),
+            
+            crashButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            crashButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
         ])
     }
 }
