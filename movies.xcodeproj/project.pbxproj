@@ -28,6 +28,8 @@
 		6F2707412C550AD0006E5A63 /* RestApiClientDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2707402C550AD0006E5A63 /* RestApiClientDecorator.swift */; };
 		6F2707452C55361F006E5A63 /* AbstractRestApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2707442C55361F006E5A63 /* AbstractRestApiClient.swift */; };
 		6F27074A2C5553EE006E5A63 /* RandomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2707492C5553EE006E5A63 /* RandomViewModel.swift */; };
+		6F4855EF2C68FA7F006C189C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6F4855EE2C68FA7F006C189C /* FirebaseAnalytics */; };
+		6F4855F12C68FA95006C189C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F4855F02C68FA95006C189C /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,7 @@
 		6F2707402C550AD0006E5A63 /* RestApiClientDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestApiClientDecorator.swift; sourceTree = "<group>"; };
 		6F2707442C55361F006E5A63 /* AbstractRestApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractRestApiClient.swift; sourceTree = "<group>"; };
 		6F2707492C5553EE006E5A63 /* RandomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomViewModel.swift; sourceTree = "<group>"; };
+		6F4855F02C68FA95006C189C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F4855EF2C68FA7F006C189C /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +99,7 @@
 				6F2707172C4C1C30006E5A63 /* Assets.xcassets */,
 				6F2707192C4C1C30006E5A63 /* LaunchScreen.storyboard */,
 				6F27071C2C4C1C30006E5A63 /* Info.plist */,
+				6F4855F02C68FA95006C189C /* GoogleService-Info.plist */,
 			);
 			path = movies;
 			sourceTree = "<group>";
@@ -176,6 +181,9 @@
 			dependencies = (
 			);
 			name = movies;
+			packageProductDependencies = (
+				6F4855EE2C68FA7F006C189C /* FirebaseAnalytics */,
+			);
 			productName = movies;
 			productReference = 6F27070B2C4C1C2E006E5A63 /* movies.app */;
 			productType = "com.apple.product-type.application";
@@ -204,6 +212,9 @@
 				Base,
 			);
 			mainGroup = 6F2707022C4C1C2E006E5A63;
+			packageReferences = (
+				6F4855ED2C68FA7F006C189C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 6F27070C2C4C1C2E006E5A63 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -220,6 +231,7 @@
 			files = (
 				6F2707182C4C1C30006E5A63 /* Assets.xcassets in Resources */,
 				6F27071B2C4C1C30006E5A63 /* Base in Resources */,
+				6F4855F12C68FA95006C189C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +483,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6F4855ED2C68FA7F006C189C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6F4855EE2C68FA7F006C189C /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6F4855ED2C68FA7F006C189C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6F2707032C4C1C2E006E5A63 /* Project object */;
 }
