@@ -24,7 +24,7 @@ class ArticleTableViewCell: UITableViewCell {
         containerView.addSubview(descriptionLabel)
         
         containerView.backgroundColor = .accentLight
-        containerView.layer.cornerRadius = 25
+        containerView.layer.cornerRadius = 12
         containerView.layer.masksToBounds = true
         
         articleImageView.contentMode = .scaleAspectFill

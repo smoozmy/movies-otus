@@ -1,4 +1,6 @@
 import UIKit
+import FirebaseCrashlytics
+import FirebaseAnalytics
 
 final class ArticlesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -31,6 +33,9 @@ final class ArticlesViewController: UIViewController, UITableViewDataSource, UIT
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activity)
         loadNews()
+        
+//        Crashlytics.crashlytics().log("Открыт экран со списком новостных статей")
+        Analytics.logEvent("Открыт экран со списком новостных статей", parameters: ["LogLvl": "Info"])
     }
     
     override func viewWillAppear(_ animated: Bool) {
