@@ -26,8 +26,8 @@ class TabBarController: UITabBarController {
         newsNavController.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
         self.viewControllers = [
-            randomNavController,
-            newsNavController
+            newsNavController,
+            randomNavController
         ]
         
         configureTabBarAppearance()
@@ -36,28 +36,28 @@ class TabBarController: UITabBarController {
     
     private func configureTabBarAppearance() {
         let tabBar = self.tabBar
-        tabBar.barTintColor = .accent
-        tabBar.unselectedItemTintColor = .white
+        tabBar.barTintColor = .white
+        tabBar.unselectedItemTintColor = .lightGrayText
         tabBar.tintColor = .buttons
         tabBar.isTranslucent = false
         
-        tabBar.shadowImage = UIImage()
-        tabBar.backgroundImage = UIImage()
+//        tabBar.shadowImage = UIImage()
+//        tabBar.backgroundImage = UIImage()
         
-        if #available(iOS 13.0, *) {
-            let appearance = UITabBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .accent
-            appearance.shadowColor = .accent
-            
-            tabBar.standardAppearance = appearance
-            if #available(iOS 15.0, *) {
-                tabBar.scrollEdgeAppearance = tabBar.standardAppearance
-            }
-        } else {
-            tabBar.shadowImage = UIImage()
-            tabBar.backgroundImage = UIImage()
-        }
+//        if #available(iOS 13.0, *) {
+//            let appearance = UITabBarAppearance()
+//            appearance.configureWithOpaqueBackground()
+//            appearance.backgroundColor = .accent
+//            appearance.shadowColor = .accent
+//            
+//            tabBar.standardAppearance = appearance
+//            if #available(iOS 15.0, *) {
+//                tabBar.scrollEdgeAppearance = tabBar.standardAppearance
+//            }
+//        } else {
+//            tabBar.shadowImage = UIImage()
+//            tabBar.backgroundImage = UIImage()
+//        }
     }
     
     private func setViewControllersBackgroundColor() {
