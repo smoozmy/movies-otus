@@ -8,7 +8,7 @@
 import UIKit
 
 class AbstractRestApiClient {
-    private let urlSession = URLSession.shared
+    let urlSession = URLSession.shared
     
     func performRequest(_ factory: RequestFactory, completion: @escaping (Result<Data, Error>) -> Void) {
         do {

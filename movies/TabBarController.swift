@@ -12,14 +12,14 @@ class TabBarController: UITabBarController {
         let newsNavController = UINavigationController(rootViewController: news)
         
         randomNavController.tabBarItem = UITabBarItem(
-            title: nil,
+            title: "Посмотреть",
             image: UIImage(systemName: "popcorn.circle"),
             selectedImage: UIImage(systemName: "popcorn.circle.fill")
         )
         randomNavController.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
         newsNavController.tabBarItem = UITabBarItem(
-            title: nil,
+            title: "Почитать",
             image: UIImage(systemName: "newspaper.circle"),
             selectedImage: UIImage(systemName: "newspaper.circle.fill")
         )
