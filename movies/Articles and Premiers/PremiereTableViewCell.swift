@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 class PremiereTableViewCell: UITableViewCell {
     
@@ -49,18 +50,17 @@ class PremiereTableViewCell: UITableViewCell {
             containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            containerView.heightAnchor.constraint(equalToConstant: 120),
             
-            // Настройка высоты постера в формате 4:3
             posterImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
             posterImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             posterImageView.widthAnchor.constraint(equalToConstant: 120),
             posterImageView.heightAnchor.constraint(equalTo: posterImageView.widthAnchor, multiplier: 4/3),
             
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 15),
             titleLabel.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
             
-            detailsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
             detailsLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             detailsLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             detailsLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10)
@@ -70,11 +70,14 @@ class PremiereTableViewCell: UITableViewCell {
     func configure(with premiere: Premiere) {
         titleLabel.text = premiere.nameRu
         detailsLabel.text = "\(premiere.genres.first?.genre ?? "") | \(premiere.countries.first?.country ?? "") \(premiere.duration ?? 0) мин"
-        ImageLoader.shared.loadImage(from: premiere.posterUrl) { [weak self] image in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.posterImageView.image = image
-            }
+        
+        if let url = URL(string: premiere.posterUrl.absoluteString) {
+            posterImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "photo"), options: [
+                .transition(.fade(0.2)),
+                .cacheOriginalImage
+            ])
+        } else {
+            posterImageView.image = UIImage(systemName: "photo")
         }
     }
 }

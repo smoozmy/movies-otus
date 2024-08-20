@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 class ArticleTableViewCell: UITableViewCell {
     
@@ -60,8 +61,8 @@ class ArticleTableViewCell: UITableViewCell {
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
             
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15),
-            descriptionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
-            descriptionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
+            descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             descriptionLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15)
         ])
     }
@@ -69,21 +70,15 @@ class ArticleTableViewCell: UITableViewCell {
     func configure(with article: Article) {
         titleLabel.text = article.title
         descriptionLabel.text = article.description
-        setDefaultImage()
         
-        ImageLoader.shared.loadImage(from: article.imageUrl) { [weak self] image in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if let image = image {
-                    self.articleImageView.image = image
-                } else {
-                    self.setDefaultImage()
-                }
-            }
+        // Проверяем, что URL действительно валидный
+        if let url = URL(string: article.imageUrl.absoluteString) {
+            articleImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "photo"), options: [
+                .transition(.fade(0.2)),
+                .cacheOriginalImage
+            ])
+        } else {
+            articleImageView.image = UIImage(systemName: "photo")
         }
-    }
-    
-    private func setDefaultImage() {
-        articleImageView.image = UIImage(systemName: "photo")
     }
 }

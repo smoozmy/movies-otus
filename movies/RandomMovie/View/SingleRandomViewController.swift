@@ -109,6 +109,17 @@ final class SingleRandomViewController: UIViewController {
         return label
     }()
     
+    private lazy var watchButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Буду смотреть", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .lightGray
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(didTapWatchButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .accentLight
@@ -132,6 +143,11 @@ final class SingleRandomViewController: UIViewController {
         contentView.addSubview(country)
         contentView.addSubview(shortDescriptionMovie)
         contentView.addSubview(descriptionMovie)
+        contentView.addSubview(watchButton)
+    }
+    
+    @objc private func didTapWatchButton() {
+        
     }
     
     private func updateUI() {
