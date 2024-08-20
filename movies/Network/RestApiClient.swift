@@ -50,8 +50,45 @@ class RestApiClient: AbstractRestApiClient, RestApiClientProtocol {
         return nil
     }
     
-    override func handleData(_ data: Data, completion: @escaping (Result<Data, Error>) -> Void) {
-        completion(.success(data))
+    override func performRequest(_ factory: RequestFactory, completion: @escaping (Result<Data, Error>) -> Void) {
+        do {
+            let request = try factory.createRequest()
+            
+            // Логируем запрос
+            print("URL: \(request.url?.absoluteString ?? "No URL")")
+            print("Method: \(request.httpMethod ?? "No Method")")
+            print("Headers: \(request.allHTTPHeaderFields ?? [:])")
+            
+            let task = urlSession.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                if let error = self.validate(response: response) {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let data = data else {
+                    completion(.failure(NetworkError.emptyData))
+                    return
+                }
+                
+                // Логируем ответ
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("Response code: \(httpResponse.statusCode)")
+                }
+                if let responseData = String(data: data, encoding: .utf8) {
+                    print("Response data: \(responseData)")
+                }
+                
+                self.handleData(data, completion: completion)
+            }
+            task.resume()
+        } catch {
+            completion(.failure(error))
+        }
     }
 }
 

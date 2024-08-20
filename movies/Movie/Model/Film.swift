@@ -29,3 +29,12 @@ struct Country: Codable {
     let country: String
 }
 
+
+struct Actor: Codable {
+    let staffId: Int
+    let nameRu: String?
+    let nameEn: String?
+    let posterUrl: String?
+    let professionText: String
+    let professionKey: String
+}

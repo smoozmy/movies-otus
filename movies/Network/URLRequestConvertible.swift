@@ -34,7 +34,7 @@ extension URLRequestConvertible {
     }
     
     var headers: [String: String] {
-        return ["X-API-KEY": "a9f1a40f-2e58-4d6d-9fb4-757ff9ac2619"]
+        return ["X-API-KEY": "\(Constants.standart.apiKey)"]
     }
     
     var urlQuery: [String: String] {

@@ -7,27 +7,37 @@ class TabBarController: UITabBarController {
         
         let random = RandomViewController()
         let news = ArticlesViewController()
+        let profile = ProfileViewController()
         
         let randomNavController = UINavigationController(rootViewController: random)
         let newsNavController = UINavigationController(rootViewController: news)
+        let profileNavController = UINavigationController(rootViewController: profile)
         
         randomNavController.tabBarItem = UITabBarItem(
-            title: nil,
+            title: "Посмотреть",
             image: UIImage(systemName: "popcorn.circle"),
             selectedImage: UIImage(systemName: "popcorn.circle.fill")
         )
         randomNavController.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
         newsNavController.tabBarItem = UITabBarItem(
-            title: nil,
+            title: "Почитать",
             image: UIImage(systemName: "newspaper.circle"),
             selectedImage: UIImage(systemName: "newspaper.circle.fill")
         )
         newsNavController.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
+        profileNavController.tabBarItem = UITabBarItem(
+            title: "Профиль",
+            image: UIImage(systemName: "person.crop.circle"),
+            selectedImage: UIImage(systemName: "person.crop.circle.fill")
+        )
+        profileNavController.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+        
         self.viewControllers = [
             newsNavController,
-            randomNavController
+            randomNavController,
+            profileNavController
         ]
         
         configureTabBarAppearance()
