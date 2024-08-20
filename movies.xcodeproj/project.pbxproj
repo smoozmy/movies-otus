@@ -42,6 +42,8 @@
 		6F69D3B62C748B7400494942 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F69D3B52C748B7400494942 /* LoginViewController.swift */; };
 		6F69D3B82C74AAD100494942 /* FavoriteFilmCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F69D3B72C74AAD100494942 /* FavoriteFilmCell.swift */; };
 		6F69D3BA2C74B2E700494942 /* FilmDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F69D3B92C74B2E700494942 /* FilmDetailViewController.swift */; };
+		6F69D3BC2C74B39200494942 /* ActorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F69D3BB2C74B39200494942 /* ActorCell.swift */; };
+		6F69D3BF2C74D1D200494942 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F69D3BE2C74D1D200494942 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +81,8 @@
 		6F69D3B52C748B7400494942 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6F69D3B72C74AAD100494942 /* FavoriteFilmCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteFilmCell.swift; sourceTree = "<group>"; };
 		6F69D3B92C74B2E700494942 /* FilmDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmDetailViewController.swift; sourceTree = "<group>"; };
+		6F69D3BB2C74B39200494942 /* ActorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActorCell.swift; sourceTree = "<group>"; };
+		6F69D3BE2C74D1D200494942 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +141,7 @@
 				6F2707472C5553A7006E5A63 /* View */,
 				6F2707482C5553B2006E5A63 /* ViewModel */,
 				6F69D3B92C74B2E700494942 /* FilmDetailViewController.swift */,
+				6F69D3BB2C74B39200494942 /* ActorCell.swift */,
 			);
 			path = Movie;
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 				6F69D3B12C748A9000494942 /* User.swift */,
 				6F69D3B32C748AC100494942 /* RegisterViewController.swift */,
 				6F69D3B52C748B7400494942 /* LoginViewController.swift */,
+				6F69D3BE2C74D1D200494942 /* Constants.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -330,6 +336,7 @@
 				6F27074A2C5553EE006E5A63 /* RandomViewModel.swift in Sources */,
 				6F27070F2C4C1C2E006E5A63 /* AppDelegate.swift in Sources */,
 				6F2707272C4D2B00006E5A63 /* SingleRandomViewController.swift in Sources */,
+				6F69D3BF2C74D1D200494942 /* Constants.swift in Sources */,
 				6F69D3AF2C74089700494942 /* FavoritesManager.swift in Sources */,
 				6F2707372C4D6A04006E5A63 /* ArticleWebViewController.swift in Sources */,
 				6F2707352C4D5FD8006E5A63 /* ArticleTableViewCell.swift in Sources */,
@@ -344,6 +351,7 @@
 				6F27073A2C4D9236006E5A63 /* RandomService.swift in Sources */,
 				6F69D3B82C74AAD100494942 /* FavoriteFilmCell.swift in Sources */,
 				6F2707452C55361F006E5A63 /* AbstractRestApiClient.swift in Sources */,
+				6F69D3BC2C74B39200494942 /* ActorCell.swift in Sources */,
 				6F2707252C4C1E6C006E5A63 /* ArticlesViewController.swift in Sources */,
 				6F2707312C4D4B6F006E5A63 /* Article.swift in Sources */,
 				6F69D3BA2C74B2E700494942 /* FilmDetailViewController.swift in Sources */,

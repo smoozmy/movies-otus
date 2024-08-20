@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class FavoriteFilmCell: UITableViewCell {
 
@@ -61,14 +62,10 @@ final class FavoriteFilmCell: UITableViewCell {
     }
 
     func configure(with film: Film) {
+        // Используем Kingfisher для загрузки и кэширования изображения
         if let url = URL(string: film.posterUrl) {
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-                guard let data = data else { return }
-                DispatchQueue.main.async {
-                    self?.posterImageView.image = UIImage(data: data)
-                    self?.titleLabel.text = film.nameRu ?? film.nameOriginal
-                }
-            }.resume()
+            posterImageView.kf.setImage(with: url)
         }
+        titleLabel.text = film.nameRu ?? film.nameOriginal
     }
 }

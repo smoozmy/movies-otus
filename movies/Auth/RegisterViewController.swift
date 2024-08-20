@@ -6,8 +6,10 @@ final class RegistrationViewController: UIViewController {
     
     private lazy var nameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Имя"
+        textField.placeholder = "Твое имя"
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = .white
+        textField.tintColor = .lightGrayText
         textField.autocapitalizationType = .none
         textField.font = UIFont.systemFont(ofSize: 16)
         return textField
@@ -15,8 +17,10 @@ final class RegistrationViewController: UIViewController {
     
     private lazy var loginTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Логин"
+        textField.placeholder = "Придумай логин"
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = .white
+        textField.tintColor = .lightGrayText
         textField.autocapitalizationType = .none
         textField.font = UIFont.systemFont(ofSize: 16)
         return textField
@@ -24,8 +28,10 @@ final class RegistrationViewController: UIViewController {
     
     private lazy var passwordTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Пароль"
+        textField.placeholder = "Придумай пароль"
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = .white
+        textField.tintColor = .lightGrayText
         textField.isSecureTextEntry = true
         textField.font = UIFont.systemFont(ofSize: 16)
         return textField
@@ -34,9 +40,9 @@ final class RegistrationViewController: UIViewController {
     private lazy var registerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Зарегистрироваться", for: .normal)
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = .buttons
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 8
+        button.layer.cornerRadius = 12
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
         return button
@@ -45,7 +51,7 @@ final class RegistrationViewController: UIViewController {
     private lazy var cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Отменить", for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
+        button.setTitleColor(.systemRed, for: .normal)
         button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         return button
     }()
@@ -54,7 +60,7 @@ final class RegistrationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .accent
         
         setupUI()
     }
@@ -73,6 +79,10 @@ final class RegistrationViewController: UIViewController {
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            
+            nameTextField.heightAnchor.constraint(equalToConstant: 50),
+            loginTextField.heightAnchor.constraint(equalToConstant: 50),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             
             registerButton.heightAnchor.constraint(equalToConstant: 50),
             cancelButton.heightAnchor.constraint(equalToConstant: 44)

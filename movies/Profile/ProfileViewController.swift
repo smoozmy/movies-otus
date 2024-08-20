@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -171,6 +172,15 @@ final class ProfileViewController: UIViewController {
         notificationLabel.text = "\(user?.favoriteMovies.count ?? 0)"
         favoriteTableView.reloadData()
     }
+    
+    private func updateUser() {
+        if let login = UserDefaults.standard.string(forKey: "loggedInUser"),
+           let userData = UserDefaults.standard.data(forKey: "user_\(login)"),
+           let user = try? JSONDecoder().decode(User.self, from: userData) {
+            self.user = user
+        }
+    }
+
 }
 
 // MARK: - Constraints
@@ -192,6 +202,8 @@ extension ProfileViewController {
             
             logoutButton.widthAnchor.constraint(equalToConstant: 24),
             logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            logoutButton.heightAnchor.constraint(equalToConstant: 24),
+            logoutButton.widthAnchor.constraint(equalToConstant: 24),
             
             notificationLabel.widthAnchor.constraint(equalToConstant: 40),
             notificationLabel.heightAnchor.constraint(equalToConstant: 22),
@@ -227,13 +239,32 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let filmID = user?.favoriteMovies[indexPath.row] else { return }
+
+        fetchFilmDetails(for: filmID) { [weak self] film in
+            DispatchQueue.main.async {
+                let detailVC = FilmDetailViewController()
+                detailVC.film = film
+                detailVC.onFavoriteStatusChanged = {
+                    // Обновляем данные профиля после изменения состояния избранного
+                    self?.updateUser()
+                    self?.updateUI()
+                }
+                self?.navigationController?.pushViewController(detailVC, animated: true)
+            }
+        }
+    }
+
+
 
     private func fetchFilmDetails(for filmID: Int, completion: @escaping (Film) -> Void) {
         let endpoint = "https://kinopoiskapiunofficial.tech/api/v2.2/films/\(filmID)"
         guard let url = URL(string: endpoint) else { return }
 
         var request = URLRequest(url: url)
-        request.addValue("a9f1a40f-2e58-4d6d-9fb4-757ff9ac2619", forHTTPHeaderField: "X-API-KEY")
+        request.addValue("\(Constants.standart.apiKey)", forHTTPHeaderField: "X-API-KEY")
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else { return }

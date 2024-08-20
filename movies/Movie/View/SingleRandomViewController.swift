@@ -3,12 +3,7 @@ import UIKit
 final class SingleRandomViewController: UIViewController {
     
     var film: Film?
-    var user: User? 
-//    var login: String?
-
-//    let singleRandomVC = SingleRandomViewController()
- /*   singleRandomVC.login = currentUser.login*/ // Передаем логин текущего пользователя
-//    navigationController?.pushViewController(singleRandomVC, animated: true)
+    var user: User?
     
     // MARK: - UI and Life Cycle
     
@@ -126,6 +121,18 @@ final class SingleRandomViewController: UIViewController {
         return button
     }()
     
+    private lazy var refreshButton: UIButton = {
+        let button = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .medium)
+        button.setImage(UIImage(systemName: "arrow.triangle.2.circlepath", withConfiguration: config), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .red
+        button.layer.cornerRadius = 15
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapRefreshButton), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .accentLight
@@ -139,8 +146,6 @@ final class SingleRandomViewController: UIViewController {
         setupConstraints()
         updateUI()
     }
-
-
     
     private func setupView() {
         view.addSubview(scrollView)
@@ -157,51 +162,31 @@ final class SingleRandomViewController: UIViewController {
         contentView.addSubview(shortDescriptionMovie)
         contentView.addSubview(descriptionMovie)
         contentView.addSubview(favoriteButton)
+        contentView.addSubview(refreshButton)
     }
     
     @objc private func didTapFavoriteButton() {
-        print(film?.kinopoiskId)
-        
         guard let film = film, var user = user else {
-            print("User or Film is not set")
             return
         }
 
-        // Проверяем, есть ли фильм в избранных
         if let index = user.favoriteMovies.firstIndex(of: film.kinopoiskId) {
             user.favoriteMovies.remove(at: index)
-            favoriteButton.backgroundColor = .gray // Кнопка снова неактивна
-            print("Film removed from favorites")
+            favoriteButton.backgroundColor = .gray
         } else {
             user.favoriteMovies.append(film.kinopoiskId)
-            favoriteButton.backgroundColor = .red // Кнопка активна
-            print("Film added to favorites")
+            favoriteButton.backgroundColor = .red
         }
 
-        // Сохраняем обновленные данные пользователя
         if let encodedUser = try? JSONEncoder().encode(user) {
             UserDefaults.standard.set(encodedUser, forKey: "user_\(user.login)")
-            print("User data saved successfully")
-        } else {
-            print("Failed to encode and save user data")
         }
-
-//         Обновляем данные профиля
-        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-        sceneDelegate?.switchToMainInterface()
     }
-
-
-        
-//        // Сохраняем обновленные данные пользователя
-//        if let encodedUser = try? JSONEncoder().encode(user) {
-//            UserDefaults.standard.set(encodedUser, forKey: "user")
-//        }
-//        
-//        // Обновляем данные профиля
-//        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-//        sceneDelegate?.switchToMainInterface()
     
+    @objc private func didTapRefreshButton() {
+        // Логика обновления страницы
+        // Например, запрос нового фильма через ViewModel
+    }
     
     private func updateUI() {
         guard let film = film else { return }
@@ -283,13 +268,24 @@ extension SingleRandomViewController {
             country.centerXAnchor.constraint(equalTo: gradientImage.centerXAnchor),
             country.bottomAnchor.constraint(equalTo: gradientImage.bottomAnchor, constant: -16),
             
-            shortDescriptionMovie.topAnchor.constraint(equalTo: posterImage.bottomAnchor, constant: 16),
+            shortDescriptionMovie.topAnchor.constraint(equalTo: favoriteButton.bottomAnchor, constant: 16),
             shortDescriptionMovie.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             shortDescriptionMovie.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             descriptionMovie.topAnchor.constraint(equalTo: shortDescriptionMovie.bottomAnchor, constant: 16),
             descriptionMovie.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             descriptionMovie.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            
+            favoriteButton.topAnchor.constraint(equalTo: gradientImage.bottomAnchor, constant: 16),
+            favoriteButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 70),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            refreshButton.leadingAnchor.constraint(equalTo: favoriteButton.trailingAnchor, constant: 30),
+            refreshButton.centerYAnchor.constraint(equalTo: favoriteButton.centerYAnchor),
+            refreshButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -70),
+            refreshButton.widthAnchor.constraint(equalToConstant: 40),
+            refreshButton.heightAnchor.constraint(equalToConstant: 40),
+            
             descriptionMovie.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
         ])
     }

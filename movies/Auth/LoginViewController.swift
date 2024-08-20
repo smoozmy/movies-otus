@@ -8,6 +8,8 @@ final class LoginViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Логин"
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = .white
+        textField.tintColor = .lightGrayText
         textField.autocapitalizationType = .none
         textField.font = UIFont.systemFont(ofSize: 16)
         return textField
@@ -17,6 +19,8 @@ final class LoginViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Пароль"
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = .white
+        textField.tintColor = .lightGrayText
         textField.isSecureTextEntry = true
         textField.font = UIFont.systemFont(ofSize: 16)
         return textField
@@ -25,9 +29,9 @@ final class LoginViewController: UIViewController {
     private lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Войти", for: .normal)
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = .buttons
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 8
+        button.layer.cornerRadius = 12
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
         return button
@@ -36,7 +40,7 @@ final class LoginViewController: UIViewController {
     private lazy var registerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Регистрация", for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
+        button.setTitleColor(.lightGrayText, for: .normal)
         button.addTarget(self, action: #selector(didTapRegisterButton), for: .touchUpInside)
         return button
     }()
@@ -45,7 +49,7 @@ final class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .accent
         setupUI()
     }
     
@@ -64,6 +68,10 @@ final class LoginViewController: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             
+            loginTextField.heightAnchor.constraint(equalToConstant: 50),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
+            
+            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 50),
             loginButton.heightAnchor.constraint(equalToConstant: 50),
             registerButton.heightAnchor.constraint(equalToConstant: 44)
         ])

@@ -114,6 +114,23 @@ final class ArticlesViewController: UIViewController, UITableViewDataSource, UIT
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
+    private func fetchFilmDetails(for filmID: Int, completion: @escaping (Film) -> Void) {
+        let endpoint = "https://kinopoiskapiunofficial.tech/api/v2.2/films/\(filmID)"
+        guard let url = URL(string: endpoint) else { return }
+
+        var request = URLRequest(url: url)
+        request.addValue("\(Constants.standart.apiKey)", forHTTPHeaderField: "X-API-KEY")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else { return }
+            let decoder = JSONDecoder()
+            if let film = try? decoder.decode(Film.self, from: data) {
+                completion(film)
+            }
+        }.resume()
+    }
+
+    
     // MARK: - Segmented Control Action
     
     @objc private func segmentedControlChanged(_ sender: UISegmentedControl) {
@@ -169,11 +186,22 @@ final class ArticlesViewController: UIViewController, UITableViewDataSource, UIT
             let webViewController = ArticleWebViewController()
             webViewController.url = article.url
             navigationController?.pushViewController(webViewController, animated: true)
-        } else {
+        } else if tableView == premieresTableView {
             let premiere = premieres[indexPath.row]
-            // Обработка нажатия на премьеру
+            
+            // Получаем подробную информацию о фильме
+            fetchFilmDetails(for: premiere.kinopoiskId) { [weak self] film in
+                DispatchQueue.main.async {
+                    let detailVC = FilmDetailViewController()
+                    detailVC.film = film
+                    self?.navigationController?.pushViewController(detailVC, animated: true)
+                }
+            }
         }
     }
+
+    
+    
     
     // MARK: - Load Content
     
