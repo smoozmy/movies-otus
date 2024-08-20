@@ -3,6 +3,7 @@ import UIKit
 final class SingleRandomViewController: UIViewController {
     
     var film: Film?
+    var user: User? 
     
     // MARK: - UI and Life Cycle
     
@@ -109,13 +110,13 @@ final class SingleRandomViewController: UIViewController {
         return label
     }()
     
-    private lazy var watchButton: UIButton = {
+    private lazy var favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Буду смотреть", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .lightGray
         button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(didTapWatchButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapFavoriteButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -143,11 +144,28 @@ final class SingleRandomViewController: UIViewController {
         contentView.addSubview(country)
         contentView.addSubview(shortDescriptionMovie)
         contentView.addSubview(descriptionMovie)
-        contentView.addSubview(watchButton)
+        contentView.addSubview(favoriteButton)
     }
     
-    @objc private func didTapWatchButton() {
+    @objc private func didTapFavoriteButton() {
+        guard let film = film, var user = user else { return }
         
+        if let index = user.favoriteMovies.firstIndex(where: { $0.kinopoiskId == film.kinopoiskId }) {
+            user.favoriteMovies.remove(at: index)
+            favoriteButton.backgroundColor = .gray // Кнопка снова неактивна
+        } else {
+            user.favoriteMovies.append(film)
+            favoriteButton.backgroundColor = .red // Кнопка активна
+        }
+        
+        // Сохраняем обновленные данные пользователя
+        if let encodedUser = try? JSONEncoder().encode(user) {
+            UserDefaults.standard.set(encodedUser, forKey: "user")
+        }
+        
+        // Обновляем данные профиля
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        sceneDelegate?.switchToMainInterface()
     }
     
     private func updateUI() {

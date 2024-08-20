@@ -1,11 +1,10 @@
 import UIKit
-import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
-    private var animationLayers = Set<CALayer>()
+    private var user: User?
     
-    // MARK: - UI and Lyfe Cycle
+    // MARK: - UI and Life Cycle
     
     private lazy var mainStackView: UIStackView = {
         let element = UIStackView()
@@ -51,8 +50,6 @@ final class ProfileViewController: UIViewController {
         return element
     }()
     
-    private var profileImageServiceObserver: NSObjectProtocol?
-    
     private lazy var logoutButton: UIButton = {
         let element = UIButton(type: .custom)
         element.setImage(UIImage(named: "Logout"), for: .normal)
@@ -64,7 +61,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var nameLabel: UILabel = {
         let element = UILabel()
-        element.text = "Александр Крапивин"
         element.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         element.textColor = .blackText
         element.textAlignment = .left
@@ -75,22 +71,10 @@ final class ProfileViewController: UIViewController {
     
     private lazy var loginLabel: UILabel = {
         let element = UILabel()
-        element.text = "@smoozmy"
         element.font = UIFont.systemFont(ofSize: 13)
         element.textColor = .grayText
         element.textAlignment = .left
         element.numberOfLines = 1
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
-    
-    private lazy var discriptionLabel: UILabel = {
-        let element = UILabel()
-        element.text = "Hello, World!"
-        element.font = UIFont.systemFont(ofSize: 13)
-        element.textColor = .grayText
-        element.textAlignment = .left
-        element.numberOfLines = 0
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -109,7 +93,6 @@ final class ProfileViewController: UIViewController {
     private lazy var notificationLabel: UILabel = {
         let element = UILabel()
         element.backgroundColor = .buttons
-        element.text = "0"
         element.textColor = .white
         element.font = UIFont.systemFont(ofSize: 13)
         element.textAlignment = .center
@@ -121,14 +104,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var spacer: UIView = {
         let element = UIView()
-        
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
-    
-    private lazy var noPhotoImage: UIImageView = {
-        let element = UIImageView()
-        element.image = UIImage(named: "NoPhoto")
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -136,11 +111,17 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .accent
+        
+        if let login = UserDefaults.standard.string(forKey: "loggedInUser"),
+           let userData = UserDefaults.standard.data(forKey: "user_\(login)"),
+           let user = try? JSONDecoder().decode(User.self, from: userData) {
+            self.user = user
+        }
+        
         setView()
         setupConstraints()
-       
+        updateUI()
     }
-  
     
     private func setView() {
         view.addSubview(mainStackView)
@@ -152,22 +133,31 @@ final class ProfileViewController: UIViewController {
         favoriteStackView.addArrangedSubview(notificationLabel)
         favoriteStackView.addArrangedSubview(spacer)
         
-        view.addSubview(noPhotoImage)
-        
         headerStackView.addArrangedSubview(userPhoto)
         headerStackView.addArrangedSubview(logoutButton)
         
         infoStackView.addArrangedSubview(nameLabel)
         infoStackView.addArrangedSubview(loginLabel)
-        infoStackView.addArrangedSubview(discriptionLabel)
     }
     
     // MARK: - Actions
     
     @objc private func didTapLogoutButton() {
-        print("logout")
+        UserDefaults.standard.set(false, forKey: "isLoggedIn")
+        UserDefaults.standard.removeObject(forKey: "loggedInUser")
+        
+        let loginVC = LoginViewController()
+        loginVC.modalPresentationStyle = .fullScreen
+        present(loginVC, animated: true, completion: nil)
+    }
+    
+    private func updateUI() {
+        nameLabel.text = user?.name
+        loginLabel.text = user?.login
+        notificationLabel.text = "\(user?.favoriteMovies.count ?? 0)"
     }
 }
+
 // MARK: - Constraints
 
 extension ProfileViewController {
@@ -186,12 +176,7 @@ extension ProfileViewController {
             logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             
             notificationLabel.widthAnchor.constraint(equalToConstant: 40),
-            notificationLabel.heightAnchor.constraint(equalToConstant: 22),
-            
-            noPhotoImage.topAnchor.constraint(equalTo: favoriteStackView.bottomAnchor, constant: 110),
-            noPhotoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            noPhotoImage.widthAnchor.constraint(equalToConstant: 100),
-            noPhotoImage.heightAnchor.constraint(equalToConstant: 100)
+            notificationLabel.heightAnchor.constraint(equalToConstant: 22)
         ])
     }
 }
