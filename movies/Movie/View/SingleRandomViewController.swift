@@ -4,6 +4,11 @@ final class SingleRandomViewController: UIViewController {
     
     var film: Film?
     var user: User? 
+//    var login: String?
+
+//    let singleRandomVC = SingleRandomViewController()
+ /*   singleRandomVC.login = currentUser.login*/ // Передаем логин текущего пользователя
+//    navigationController?.pushViewController(singleRandomVC, animated: true)
     
     // MARK: - UI and Life Cycle
     
@@ -124,11 +129,18 @@ final class SingleRandomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .accentLight
-        
+
+        if let savedLogin = UserDefaults.standard.string(forKey: "loggedInUser"),
+           let savedUserData = UserDefaults.standard.data(forKey: "user_\(savedLogin)") {
+            user = try? JSONDecoder().decode(User.self, from: savedUserData)
+        }
+
         setupView()
         setupConstraints()
         updateUI()
     }
+
+
     
     private func setupView() {
         view.addSubview(scrollView)
@@ -148,25 +160,48 @@ final class SingleRandomViewController: UIViewController {
     }
     
     @objc private func didTapFavoriteButton() {
-        guard let film = film, var user = user else { return }
+        print(film?.kinopoiskId)
         
-        if let index = user.favoriteMovies.firstIndex(where: { $0.kinopoiskId == film.kinopoiskId }) {
+        guard let film = film, var user = user else {
+            print("User or Film is not set")
+            return
+        }
+
+        // Проверяем, есть ли фильм в избранных
+        if let index = user.favoriteMovies.firstIndex(of: film.kinopoiskId) {
             user.favoriteMovies.remove(at: index)
             favoriteButton.backgroundColor = .gray // Кнопка снова неактивна
+            print("Film removed from favorites")
         } else {
-            user.favoriteMovies.append(film)
+            user.favoriteMovies.append(film.kinopoiskId)
             favoriteButton.backgroundColor = .red // Кнопка активна
+            print("Film added to favorites")
         }
-        
+
         // Сохраняем обновленные данные пользователя
         if let encodedUser = try? JSONEncoder().encode(user) {
-            UserDefaults.standard.set(encodedUser, forKey: "user")
+            UserDefaults.standard.set(encodedUser, forKey: "user_\(user.login)")
+            print("User data saved successfully")
+        } else {
+            print("Failed to encode and save user data")
         }
-        
-        // Обновляем данные профиля
+
+//         Обновляем данные профиля
         let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
         sceneDelegate?.switchToMainInterface()
     }
+
+
+        
+//        // Сохраняем обновленные данные пользователя
+//        if let encodedUser = try? JSONEncoder().encode(user) {
+//            UserDefaults.standard.set(encodedUser, forKey: "user")
+//        }
+//        
+//        // Обновляем данные профиля
+//        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+//        sceneDelegate?.switchToMainInterface()
+    
     
     private func updateUI() {
         guard let film = film else { return }

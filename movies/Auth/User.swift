@@ -4,7 +4,7 @@ struct User: Codable {
     var name: String
     var login: String
     var password: String
-    var favoriteMovies: [Film]
+    var favoriteMovies: [Int] = []
     
     init(name: String, login: String, password: String) {
         self.name = name

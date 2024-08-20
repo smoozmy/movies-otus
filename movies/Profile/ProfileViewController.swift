@@ -42,7 +42,7 @@ final class ProfileViewController: UIViewController {
     
     private lazy var userPhoto: UIImageView = {
         let element = UIImageView()
-        element.image = UIImage(named: "UserPhotoDefault")
+        element.image = UIImage(named: "UserPhotoOtus")
         element.contentMode = .scaleAspectFill
         element.layer.cornerRadius = 35
         element.clipsToBounds = true
@@ -102,6 +102,18 @@ final class ProfileViewController: UIViewController {
         return element
     }()
     
+    private lazy var favoriteTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .accent
+        tableView.register(FavoriteFilmCell.self, forCellReuseIdentifier: FavoriteFilmCell.identifier)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.rowHeight = 120
+        tableView.separatorStyle = .none // Убираем разделительные линии
+        return tableView
+    }()
+    
     private lazy var spacer: UIView = {
         let element = UIView()
         element.translatesAutoresizingMaskIntoConstraints = false
@@ -128,6 +140,7 @@ final class ProfileViewController: UIViewController {
         mainStackView.addArrangedSubview(headerStackView)
         mainStackView.addArrangedSubview(infoStackView)
         mainStackView.addArrangedSubview(favoriteStackView)
+        mainStackView.addArrangedSubview(favoriteTableView)
         
         favoriteStackView.addArrangedSubview(favoriteLabel)
         favoriteStackView.addArrangedSubview(notificationLabel)
@@ -143,6 +156,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func didTapLogoutButton() {
+        print("Logout")
         UserDefaults.standard.set(false, forKey: "isLoggedIn")
         UserDefaults.standard.removeObject(forKey: "loggedInUser")
         
@@ -155,6 +169,7 @@ final class ProfileViewController: UIViewController {
         nameLabel.text = user?.name
         loginLabel.text = user?.login
         notificationLabel.text = "\(user?.favoriteMovies.count ?? 0)"
+        favoriteTableView.reloadData()
     }
 }
 
@@ -168,6 +183,9 @@ extension ProfileViewController {
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             headerStackView.heightAnchor.constraint(equalToConstant: 70),
+            headerStackView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor),
+            headerStackView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor),
+            headerStackView.topAnchor.constraint(equalTo: mainStackView.topAnchor, constant: -40),
             
             userPhoto.widthAnchor.constraint(equalToConstant: 70),
             userPhoto.heightAnchor.constraint(equalToConstant: 70),
@@ -176,7 +194,64 @@ extension ProfileViewController {
             logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             
             notificationLabel.widthAnchor.constraint(equalToConstant: 40),
-            notificationLabel.heightAnchor.constraint(equalToConstant: 22)
+            notificationLabel.heightAnchor.constraint(equalToConstant: 22),
+            
+            favoriteTableView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6),
+            favoriteTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            favoriteTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            favoriteTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+}
+
+// MARK: - UITableViewDataSource, UITableViewDelegate
+
+extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return user?.favoriteMovies.count ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteFilmCell.identifier, for: indexPath) as? FavoriteFilmCell,
+              let filmID = user?.favoriteMovies[indexPath.row] else {
+            return UITableViewCell()
+        }
+
+        // Загружаем данные о фильме по ID и обновляем ячейку
+        fetchFilmDetails(for: filmID) { film in
+            DispatchQueue.main.async {
+                cell.configure(with: film)
+            }
+        }
+
+        return cell
+    }
+
+    private func fetchFilmDetails(for filmID: Int, completion: @escaping (Film) -> Void) {
+        let endpoint = "https://kinopoiskapiunofficial.tech/api/v2.2/films/\(filmID)"
+        guard let url = URL(string: endpoint) else { return }
+
+        var request = URLRequest(url: url)
+        request.addValue("a9f1a40f-2e58-4d6d-9fb4-757ff9ac2619", forHTTPHeaderField: "X-API-KEY")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else { return }
+            let decoder = JSONDecoder()
+            if let film = try? decoder.decode(Film.self, from: data) {
+                completion(film)
+            }
+        }.resume()
+    }
+
+    // Добавляем отступы между ячейками
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 5 // Высота отступа между ячейками
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        footerView.backgroundColor = .clear
+        return footerView
     }
 }
