@@ -62,7 +62,6 @@ final class FavoriteFilmCell: UITableViewCell {
     }
 
     func configure(with film: Film) {
-        // Используем Kingfisher для загрузки и кэширования изображения
         if let url = URL(string: film.posterUrl) {
             posterImageView.kf.setImage(with: url)
         }

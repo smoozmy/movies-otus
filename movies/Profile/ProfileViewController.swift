@@ -248,7 +248,6 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
                 let detailVC = FilmDetailViewController()
                 detailVC.film = film
                 detailVC.onFavoriteStatusChanged = {
-                    // Обновляем данные профиля после изменения состояния избранного
                     self?.updateUser()
                     self?.updateUI()
                 }
@@ -275,9 +274,8 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         }.resume()
     }
 
-    // Добавляем отступы между ячейками
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 5 // Высота отступа между ячейками
+        return 5
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

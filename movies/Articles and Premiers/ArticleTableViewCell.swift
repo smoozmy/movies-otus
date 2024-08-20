@@ -71,7 +71,6 @@ class ArticleTableViewCell: UITableViewCell {
         titleLabel.text = article.title
         descriptionLabel.text = article.description
         
-        // Проверяем, что URL действительно валидный
         if let url = URL(string: article.imageUrl.absoluteString) {
             articleImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "photo"), options: [
                 .transition(.fade(0.2)),

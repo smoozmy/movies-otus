@@ -246,9 +246,9 @@ final class FilmDetailViewController: UIViewController {
             loadImage(from: url)
         }
         
-        // Проверка, добавлен ли фильм в избранное
         if let user = user, user.favoriteMovies.contains(film.kinopoiskId) {
-            favoriteButton.backgroundColor = .red
+            favoriteButton.backgroundColor = .buttons
+            favoriteButton.setTitle("Смотрю", for: .normal)
         } else {
             favoriteButton.backgroundColor = .lightGray
         }
@@ -282,10 +282,11 @@ final class FilmDetailViewController: UIViewController {
 
         if let index = user.favoriteMovies.firstIndex(of: film.kinopoiskId) {
             user.favoriteMovies.remove(at: index)
-            favoriteButton.backgroundColor = .gray
+            favoriteButton.backgroundColor = .lightGray
         } else {
             user.favoriteMovies.append(film.kinopoiskId)
-            favoriteButton.backgroundColor = .red
+            favoriteButton.backgroundColor = .buttons
+            favoriteButton.setTitle("Смотрю", for: .normal)
         }
 
         if let encodedUser = try? JSONEncoder().encode(user) {

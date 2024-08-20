@@ -4,7 +4,9 @@ final class SingleRandomViewController: UIViewController {
     
     var film: Film?
     var user: User?
-    
+    var onFavoriteStatusChanged: (() -> Void)?
+    private let viewModel = RandomViewModel()
+
     // MARK: - UI and Life Cycle
     
     private lazy var scrollView: UIScrollView = {
@@ -172,20 +174,23 @@ final class SingleRandomViewController: UIViewController {
 
         if let index = user.favoriteMovies.firstIndex(of: film.kinopoiskId) {
             user.favoriteMovies.remove(at: index)
-            favoriteButton.backgroundColor = .gray
+            favoriteButton.backgroundColor = .lightGray
         } else {
             user.favoriteMovies.append(film.kinopoiskId)
-            favoriteButton.backgroundColor = .red
+            favoriteButton.backgroundColor = .buttons
+            favoriteButton.setTitle("Смотрю", for: .normal)
         }
 
         if let encodedUser = try? JSONEncoder().encode(user) {
             UserDefaults.standard.set(encodedUser, forKey: "user_\(user.login)")
         }
+        
+       
+        onFavoriteStatusChanged?()
     }
     
     @objc private func didTapRefreshButton() {
-        // Логика обновления страницы
-        // Например, запрос нового фильма через ViewModel
+        viewModel.fetchRandomFilm()
     }
     
     private func updateUI() {

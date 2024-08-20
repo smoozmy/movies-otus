@@ -189,7 +189,6 @@ final class ArticlesViewController: UIViewController, UITableViewDataSource, UIT
         } else if tableView == premieresTableView {
             let premiere = premieres[indexPath.row]
             
-            // Получаем подробную информацию о фильме
             fetchFilmDetails(for: premiere.kinopoiskId) { [weak self] film in
                 DispatchQueue.main.async {
                     let detailVC = FilmDetailViewController()
