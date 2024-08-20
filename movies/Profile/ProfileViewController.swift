@@ -82,7 +82,7 @@ final class ProfileViewController: UIViewController {
     
     private lazy var favoriteLabel: UILabel = {
         let element = UILabel()
-        element.text = "Избранное"
+        element.text = "Мои фильмы"
         element.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         element.textColor = .blackText
         element.textAlignment = .left
@@ -111,7 +111,7 @@ final class ProfileViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = 120
-        tableView.separatorStyle = .none // Убираем разделительные линии
+        tableView.separatorStyle = .none
         return tableView
     }()
     
@@ -124,6 +124,10 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .accent
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUserAndUI), name: NSNotification.Name("FavoritesChanged"), object: nil)
+
+           
         
         if let login = UserDefaults.standard.string(forKey: "loggedInUser"),
            let userData = UserDefaults.standard.data(forKey: "user_\(login)"),
@@ -179,6 +183,15 @@ final class ProfileViewController: UIViewController {
            let user = try? JSONDecoder().decode(User.self, from: userData) {
             self.user = user
         }
+    }
+    
+    @objc private func updateUserAndUI() {
+        updateUser()
+        updateUI()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("FavoritesChanged"), object: nil)
     }
 
 }

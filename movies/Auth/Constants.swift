@@ -5,7 +5,7 @@ struct Constants {
     
     static var standart: Constants {
         return Constants(
-            apiKey: "a9f1a40f-2e58-4d6d-9fb4-757ff9ac2619"
+            apiKey: "6078e4bb-4b74-47c6-b8ee-a4c5f4549e1f"
         )
     }
 }

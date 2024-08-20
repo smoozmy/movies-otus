@@ -139,7 +139,6 @@ final class FilmDetailViewController: UIViewController {
         updateUI()
         fetchActors()
         
-        // Изменение кнопки назад
         setupBackButton()
     }
 
@@ -292,6 +291,10 @@ final class FilmDetailViewController: UIViewController {
         if let encodedUser = try? JSONEncoder().encode(user) {
             UserDefaults.standard.set(encodedUser, forKey: "user_\(user.login)")
         }
+
+ 
+        NotificationCenter.default.post(name: NSNotification.Name("FavoritesChanged"), object: nil)
+        
         onFavoriteStatusChanged?()
     }
     

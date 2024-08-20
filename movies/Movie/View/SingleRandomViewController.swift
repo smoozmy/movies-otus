@@ -168,9 +168,7 @@ final class SingleRandomViewController: UIViewController {
     }
     
     @objc private func didTapFavoriteButton() {
-        guard let film = film, var user = user else {
-            return
-        }
+        guard let film = film, var user = user else { return }
 
         if let index = user.favoriteMovies.firstIndex(of: film.kinopoiskId) {
             user.favoriteMovies.remove(at: index)
@@ -184,8 +182,9 @@ final class SingleRandomViewController: UIViewController {
         if let encodedUser = try? JSONEncoder().encode(user) {
             UserDefaults.standard.set(encodedUser, forKey: "user_\(user.login)")
         }
+
+        NotificationCenter.default.post(name: NSNotification.Name("FavoritesChanged"), object: nil)
         
-       
         onFavoriteStatusChanged?()
     }
     
