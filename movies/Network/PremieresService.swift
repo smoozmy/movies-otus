@@ -34,7 +34,7 @@ class PremieresService {
     }
     
     func fetchPremieres(completion: @escaping (Result<[Premiere], Error>) -> Void) {
-        let endpoint = PremieresEndpoint(year: "2024", month: "AUGUST")
+        let endpoint = PremieresEndpoint(year: "2024", month: "NOVEMBER")
         client.performRequest(endpoint) { result in
             switch result {
             case .success(let data):
